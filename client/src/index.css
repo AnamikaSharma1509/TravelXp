@@ -1,0 +1,91 @@
+@import "tailwindcss";
+
+@theme {
+  --color-brand-midnight: #102A43;
+  --color-brand-heritage: #174A7E;
+  --color-brand-ocean: #246BCE;
+  --color-brand-sky: #D9EAF7;
+  --color-brand-ivory: #FAF7F0;
+  --color-brand-gold: #C89B3C;
+  --color-brand-terracotta: #B86B4B;
+  --color-brand-forest: #347A55;
+  --color-brand-slate: #526477;
+
+  --font-sans: "Plus Jakarta Sans", sans-serif;
+  --font-devanagari: "Noto Sans Devanagari", sans-serif;
+  --font-heritage: "Cinzel Decorative", Georgia, serif;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: #FAF7F0;
+  color: #102A43;
+}
+
+/* Custom smooth scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #f1ede3;
+}
+::-webkit-scrollbar-thumb {
+  background: #c2baa8;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #174A7E;
+}
+
+/* Custom Marker styles for Leaflet */
+.custom-pin {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50% 50% 50% 0;
+  transform: rotate(-45deg);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  border: 2px solid white;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.custom-pin:hover {
+  transform: rotate(-45deg) scale(1.18);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.4);
+}
+
+.custom-pin-inner {
+  transform: rotate(45deg);
+  width: 12px;
+  height: 12px;
+  background-color: white;
+  border-radius: 50%;
+}
+
+.pin-green { background-color: #347A55; }
+.pin-blue { background-color: #246BCE; }
+.pin-gold { background-color: #C89B3C; }
+.pin-terracotta { background-color: #B86B4B; }
+.pin-purple { background-color: #7A3E9D; }
+
+/* Custom Leaflet popup */
+.leaflet-popup-content-wrapper {
+  border-radius: 1rem !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  box-shadow: 0 10px 25px rgba(16, 42, 67, 0.2) !important;
+  border: 1px solid rgba(23, 74, 126, 0.1) !important;
+}
+
+.leaflet-popup-content {
+  margin: 0 !important;
+  line-height: 1.4 !important;
+}
+
+.leaflet-container {
+  font-family: inherit !important;
+}

@@ -1,0 +1,333 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id                String       @id @default(uuid())
+  name              String
+  displayName       String
+  email             String       @unique
+  emailNormalized   String       @unique
+  passwordHash      String?
+  emailVerifiedAt   DateTime?
+  role              String       @default("USER") // USER, ADMIN
+  preferredLanguage String       @default("en")
+  createdAt         DateTime     @default(now())
+  updatedAt         DateTime     @updatedAt
+
+  preferences       UserPreference?
+  oauthAccounts     OAuthAccount[]
+  trips             Trip[]
+  stories           Story[]
+  savedStories      SavedStory[]
+  storyReports      StoryReport[]
+  verificationTokens EmailVerificationToken[]
+  resetTokens       PasswordResetToken[]
+  bookingSearches   BookingSearch[]
+}
+
+model OAuthAccount {
+  id                String   @id @default(uuid())
+  userId            String
+  user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  provider          String   // google
+  providerAccountId String
+  createdAt         DateTime @default(now())
+
+  @@unique([provider, providerAccountId])
+}
+
+model UserPreference {
+  id                     String   @id @default(uuid())
+  userId                 String   @unique
+  user                   User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  interests              String   @default("[]") // JSON string array
+  travelStyle            String   @default("balanced") // relaxed, balanced, packed
+  budgetRange            String   @default("moderate") // budget, moderate, luxury
+  preferredLanguages     String   @default("[\"en\"]") // JSON string array
+  travelType             String   @default("family") // solo, couple, family, friends
+  accessibilityPreferences String?
+  createdAt              DateTime @default(now())
+  updatedAt              DateTime @updatedAt
+}
+
+model Destination {
+  id                 String              @id @default(uuid())
+  slug               String              @unique
+  name               String
+  country            String              @default("India")
+  state              String
+  region             String              // North, South, East, West, Central, North-East
+  latitude           Float
+  longitude          Float
+  description        String
+  heroImage          String
+  categories         String              @default("[]") // JSON string array: Heritage, Spiritual, Nature, etc.
+  bestTimeToVisit    String
+  estimatedBudget    String              // e.g. "₹2,500 - ₹5,000 / day"
+  verificationStatus String              @default("VERIFIED") // VERIFIED, COMMUNITY_SUGGESTED
+  featured           Boolean             @default(false)
+  storyCount         Int                 @default(0)
+  createdAt          DateTime            @default(now())
+  updatedAt          DateTime            @updatedAt
+
+  attractions        Attraction[]
+  culturalKnowledge  CulturalKnowledge[]
+  stories            Story[]
+  accommodations     AccommodationSuggestion[]
+}
+
+model Attraction {
+  id            String       @id @default(uuid())
+  destinationId String
+  destination   Destination  @relation(fields: [destinationId], references: [id], onDelete: Cascade)
+  name          String
+  slug          String
+  description   String
+  latitude      Float
+  longitude     Float
+  category      String       // Temple, Monument, Nature, Museum, Market, Cave
+  imageUrl      String?
+  sortOrder     Int          @default(0)
+  sourceId      String?
+  source        Source?      @relation(fields: [sourceId], references: [id])
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+
+  tripActivities TripActivity[]
+}
+
+model CulturalKnowledge {
+  id                 String       @id @default(uuid())
+  destinationId      String
+  destination        Destination  @relation(fields: [destinationId], references: [id], onDelete: Cascade)
+  title              String
+  body               String
+  contentType        String       // HISTORY, MYTHOLOGY, LEGEND, ARCHITECTURE, CULTURE, TRADITION
+  language           String       @default("en")
+  provenanceType     String       // HISTORICALLY_DOCUMENTED, SCRIPTURAL_LITERARY, RELIGIOUS_TRADITION, REGIONAL_FOLKLORE, AI_SUMMARY
+  verificationStatus String       @default("VERIFIED")
+  sourceId           String?
+  source             Source?      @relation(fields: [sourceId], references: [id])
+  createdAt          DateTime     @default(now())
+  updatedAt          DateTime     @updatedAt
+}
+
+model Source {
+  id           String              @id @default(uuid())
+  title        String
+  publisher    String
+  url          String?
+  sourceType   String              // ACADEMIC, ARCHAEOLOGICAL, ARCHIVAL, GOVERNMENT_TOURISM, LITERARY
+  retrievedAt  DateTime?
+  notes        String?
+  createdAt    DateTime            @default(now())
+
+  attractions       Attraction[]
+  culturalKnowledge CulturalKnowledge[]
+}
+
+model Story {
+  id                    String             @id @default(uuid())
+  authorId              String?
+  author                User?              @relation(fields: [authorId], references: [id], onDelete: SetNull)
+  destinationId         String?
+  destination           Destination?       @relation(fields: [destinationId], references: [id], onDelete: SetNull)
+  title                 String
+  body                  String
+  originalLanguage      String             @default("en") // en, hi, mr, bho, etc.
+  category              String             // Grandparents' stories, Family memories, Local legends, Temple traditions, etc.
+  attributionPreference String             @default("DISPLAY_NAME") // DISPLAY_NAME, PSEUDONYM, ANONYMOUS
+  authorDisplayName     String
+  approximatePeriod     String?            // e.g. "1960s", "19th Century", "Generations ago"
+  sourceContextNotes    String?
+  publicationStatus     String             @default("PUBLISHED") // DRAFT, PENDING_REVIEW, PUBLISHED, REJECTED, ARCHIVED
+  visibility            String             @default("PUBLIC") // PUBLIC, PRIVATE
+  moderationStatus      String             @default("APPROVED") // APPROVED, PENDING, REJECTED
+  publishedAt           DateTime?          @default(now())
+  createdAt             DateTime           @default(now())
+  updatedAt             DateTime           @updatedAt
+
+  translations          StoryTranslation[]
+  images                StoryImage[]
+  reports               StoryReport[]
+  savedByUsers          SavedStory[]
+}
+
+model StoryTranslation {
+  id                  String   @id @default(uuid())
+  storyId             String
+  story               Story    @relation(fields: [storyId], references: [id], onDelete: Cascade)
+  language            String   // en, hi, mr, bho
+  translatedTitle     String
+  translatedBody      String
+  translationProvider String   @default("AI_TRANSLATION")
+  translationStatus   String   @default("COMPLETED")
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+
+  @@unique([storyId, language])
+}
+
+model StoryImage {
+  id         String   @id @default(uuid())
+  storyId    String
+  story      Story    @relation(fields: [storyId], references: [id], onDelete: Cascade)
+  storageKey String
+  imageUrl   String
+  altText    String?
+  caption    String?
+  createdAt  DateTime @default(now())
+}
+
+model StoryReport {
+  id         String   @id @default(uuid())
+  storyId    String
+  story      Story    @relation(fields: [storyId], references: [id], onDelete: Cascade)
+  reporterId String?
+  reporter   User?    @relation(fields: [reporterId], references: [id], onDelete: SetNull)
+  reason     String
+  details    String?
+  status     String   @default("PENDING") // PENDING, REVIEWED, RESOLVED, DISMISSED
+  createdAt  DateTime @default(now())
+}
+
+model Trip {
+  id            String                    @id @default(uuid())
+  userId        String
+  user          User                      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title         String
+  destination   String
+  startDate     DateTime
+  endDate       DateTime
+  budget        Float
+  currency      String                    @default("INR")
+  travelerCount Int                       @default(1)
+  preferences   String?                   // JSON string
+  status        String                    @default("UPCOMING") // UPCOMING, PAST, DRAFT
+  createdAt     DateTime                  @default(now())
+  updatedAt     DateTime                  @updatedAt
+
+  days          TripDay[]
+  accommodations AccommodationSuggestion[]
+  shareLinks    ShareLink[]
+}
+
+model TripDay {
+  id         String         @id @default(uuid())
+  tripId     String
+  trip       Trip           @relation(fields: [tripId], references: [id], onDelete: Cascade)
+  dayNumber  Int
+  date       DateTime
+  title      String
+  notes      String?
+
+  activities TripActivity[]
+}
+
+model TripActivity {
+  id                     String      @id @default(uuid())
+  tripDayId              String
+  tripDay                TripDay     @relation(fields: [tripDayId], references: [id], onDelete: Cascade)
+  attractionId           String?
+  attraction             Attraction? @relation(fields: [attractionId], references: [id], onDelete: SetNull)
+  title                  String
+  description            String?
+  startTime              String      // e.g. "09:00 AM"
+  endTime                String      // e.g. "11:30 AM"
+  durationMinutes        Int         @default(60)
+  travelMode             String?     // Walking, Taxi, Metro, Auto, Drive
+  estimatedTravelMinutes Int?        @default(15)
+  estimatedCost          Float?      @default(0)
+  locationName           String
+  latitude               Float?
+  longitude              Float?
+  category               String      // Sightseeing, Culture, Dining, Rest, Transit
+  sortOrder              Int         @default(0)
+}
+
+model AccommodationSuggestion {
+  id            String       @id @default(uuid())
+  tripId        String?
+  trip          Trip?        @relation(fields: [tripId], references: [id], onDelete: Cascade)
+  destinationId String?
+  destination   Destination? @relation(fields: [destinationId], references: [id], onDelete: SetNull)
+  name          String
+  area          String?
+  latitude      Float?
+  longitude     Float?
+  provider      String       // Booking.com, MakeMyTrip, Agoda
+  providerUrl   String
+  sourceType    String       @default("PROVIDER_DEEP_LINK") // LIVE_PROVIDER, CACHED_PROVIDER, PROVIDER_DEEP_LINK
+  priceRange    String?      // e.g. "₹3,500 - ₹5,000 / night"
+  rating        Float?
+  imageUrl      String?
+  createdAt     DateTime     @default(now())
+}
+
+model BookingSearch {
+  id               String   @id @default(uuid())
+  userId           String?
+  user             User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  provider         String
+  searchType       String   // FLIGHT, TRAIN, BUS, HOTEL, EXPERIENCE
+  searchParameters String   // JSON
+  createdAt        DateTime @default(now())
+}
+
+model ShareLink {
+  id         String    @id @default(uuid())
+  tripId     String
+  trip       Trip      @relation(fields: [tripId], references: [id], onDelete: Cascade)
+  shareToken String    @unique
+  tokenHash  String
+  expiresAt  DateTime?
+  revokedAt  DateTime?
+  createdAt  DateTime  @default(now())
+}
+
+model ContactMessage {
+  id        String   @id @default(uuid())
+  name      String
+  email     String
+  subject   String
+  message   String
+  status    String   @default("RECEIVED") // RECEIVED, REPLIED, ARCHIVED
+  createdAt DateTime @default(now())
+}
+
+model EmailVerificationToken {
+  id        String    @id @default(uuid())
+  userId    String
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tokenHash String
+  expiresAt DateTime
+  usedAt    DateTime?
+  createdAt DateTime  @default(now())
+}
+
+model PasswordResetToken {
+  id        String    @id @default(uuid())
+  userId    String
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tokenHash String
+  expiresAt DateTime
+  usedAt    DateTime?
+  createdAt DateTime  @default(now())
+}
+
+model SavedStory {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  storyId   String
+  story     Story    @relation(fields: [storyId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@unique([userId, storyId])
+}
