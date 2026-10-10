@@ -1,6 +1,8 @@
 import React, { Suspense, lazy } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
+import { ThemeProvider } from './context/ThemeContext';
+import { LanguageProvider } from './context/LanguageContext';
 import { Navbar } from './components/layout/Navbar';
 import { Footer } from './components/layout/Footer';
 
@@ -43,56 +45,60 @@ const PageLoader: React.FC = () => (
 
 export function App() {
   return (
-    <AuthProvider>
-      <BrowserRouter>
-        <div className="flex flex-col min-h-screen">
-          <Navbar />
-          <main className="flex-1">
-            <Suspense fallback={<PageLoader />}>
-              <Routes>
-                {/* Public Routes */}
-                <Route path="/" element={<HomePage />} />
-                <Route path="/discover" element={<DiscoverPage />} />
-                <Route path="/explore" element={<DiscoverPage />} />
-                <Route path="/destinations" element={<DiscoverPage />} />
-                <Route path="/destinations/:slug" element={<DestinationDetailPage />} />
-                <Route path="/book" element={<BookTravelPage />} />
-                <Route path="/plan" element={<PlanTripPage />} />
-                <Route path="/plan/results" element={<PlanResultsPage />} />
-                <Route path="/know" element={<KnowPage />} />
-                <Route path="/know/:slug" element={<DestinationDetailPage />} />
-                <Route path="/stories" element={<StoriesPage />} />
-                <Route path="/stories/:id" element={<StoryDetailPage />} />
-                <Route path="/stories/new" element={<CreateStoryPage />} />
-                <Route path="/about" element={<AboutPage />} />
-                <Route path="/contact" element={<ContactPage />} />
-                <Route path="/privacy" element={<PrivacyPage />} />
-                <Route path="/terms" element={<TermsPage />} />
-                <Route path="/shared/:shareToken" element={<SharedTripPage />} />
+    <ThemeProvider>
+      <LanguageProvider>
+        <AuthProvider>
+          <BrowserRouter>
+            <div className="flex flex-col min-h-screen bg-[#FAF7F0] dark:bg-[#0B192C] text-[#102A43] dark:text-[#FAF7F0] transition-colors duration-200">
+              <Navbar />
+              <main className="flex-1">
+                <Suspense fallback={<PageLoader />}>
+                  <Routes>
+                    {/* Public Routes */}
+                    <Route path="/" element={<HomePage />} />
+                    <Route path="/discover" element={<DiscoverPage />} />
+                    <Route path="/explore" element={<DiscoverPage />} />
+                    <Route path="/destinations" element={<DiscoverPage />} />
+                    <Route path="/destinations/:slug" element={<DestinationDetailPage />} />
+                    <Route path="/book" element={<BookTravelPage />} />
+                    <Route path="/plan" element={<PlanTripPage />} />
+                    <Route path="/plan/results" element={<PlanResultsPage />} />
+                    <Route path="/know" element={<KnowPage />} />
+                    <Route path="/know/:slug" element={<DestinationDetailPage />} />
+                    <Route path="/stories" element={<StoriesPage />} />
+                    <Route path="/stories/:id" element={<StoryDetailPage />} />
+                    <Route path="/stories/new" element={<CreateStoryPage />} />
+                    <Route path="/about" element={<AboutPage />} />
+                    <Route path="/contact" element={<ContactPage />} />
+                    <Route path="/privacy" element={<PrivacyPage />} />
+                    <Route path="/terms" element={<TermsPage />} />
+                    <Route path="/shared/:shareToken" element={<SharedTripPage />} />
 
-                {/* Auth Routes */}
-                <Route path="/login" element={<LoginPage />} />
-                <Route path="/register" element={<RegisterPage />} />
-                <Route path="/verify-email" element={<VerifyEmailPage />} />
-                <Route path="/onboarding" element={<OnboardingPage />} />
+                    {/* Auth Routes */}
+                    <Route path="/login" element={<LoginPage />} />
+                    <Route path="/register" element={<RegisterPage />} />
+                    <Route path="/verify-email" element={<VerifyEmailPage />} />
+                    <Route path="/onboarding" element={<OnboardingPage />} />
 
-                {/* Authenticated / User Routes */}
-                <Route path="/my-trips" element={<MyTripsPage />} />
-                <Route path="/profile" element={<ProfilePage />} />
-                <Route path="/settings" element={<ProfilePage />} />
+                    {/* Authenticated / User Routes */}
+                    <Route path="/my-trips" element={<MyTripsPage />} />
+                    <Route path="/profile" element={<ProfilePage />} />
+                    <Route path="/settings" element={<ProfilePage />} />
 
-                {/* Administrative Routes */}
-                <Route path="/admin" element={<AdminDashboardPage />} />
+                    {/* Administrative Routes */}
+                    <Route path="/admin" element={<AdminDashboardPage />} />
 
-                {/* 404 Fallback */}
-                <Route path="*" element={<NotFoundPage />} />
-              </Routes>
-            </Suspense>
-          </main>
-          <Footer />
-        </div>
-      </BrowserRouter>
-    </AuthProvider>
+                    {/* 404 Fallback */}
+                    <Route path="*" element={<NotFoundPage />} />
+                  </Routes>
+                </Suspense>
+              </main>
+              <Footer />
+            </div>
+          </BrowserRouter>
+        </AuthProvider>
+      </LanguageProvider>
+    </ThemeProvider>
   );
 }
 

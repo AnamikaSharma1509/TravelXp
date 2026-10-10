@@ -3,9 +3,9 @@ import { Link, useNavigate } from 'react-router-dom';
 import { FullWidthIndiaMap } from '../components/map/FullWidthIndiaMap';
 import { api } from '../api/client';
 import { MapMarker, Story } from '../types';
+import { useTranslation } from '../context/LanguageContext';
 import {
   Compass,
-  MapPin,
   Calendar,
   Ticket,
   BookOpen,
@@ -16,12 +16,11 @@ import {
   Languages,
   CheckCircle2,
   ChevronDown,
-  Clock,
-  Wallet,
 } from 'lucide-react';
 
 export const HomePage: React.FC = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const mapSectionRef = useRef<HTMLDivElement>(null);
 
   const [markers, setMarkers] = useState<MapMarker[]>([]);
@@ -65,36 +64,36 @@ export const HomePage: React.FC = () => {
 
   const corePillars = [
     {
-      title: 'Discover India',
-      desc: 'Explore destinations through an interactive map and personalized recommendations.',
+      title: t('pillars.discoverTitle', 'Discover India'),
+      desc: t('pillars.discoverDesc', 'Explore destinations through an interactive map and personalized recommendations.'),
       icon: Compass,
       link: '/discover',
       badge: 'Interactive Map',
     },
     {
-      title: 'Book Travel',
-      desc: 'Find transport, accommodation, and authorized booking-provider links.',
+      title: t('pillars.bookTitle', 'Book Travel'),
+      desc: t('pillars.bookDesc', 'Find transport, accommodation, and authorized booking-provider links.'),
       icon: Ticket,
       link: '/book',
       badge: 'Verified Corridors',
     },
     {
-      title: 'Plan My Journey',
-      desc: 'Generate a realistic itinerary with travel times, budgets, and rest breaks.',
+      title: t('pillars.planTitle', 'Plan My Journey'),
+      desc: t('pillars.planDesc', 'Generate a realistic itinerary with travel times, budgets, and rest breaks.'),
       icon: Calendar,
       link: '/plan',
       badge: 'Rest-Aware AI',
     },
     {
-      title: 'Know the Place',
-      desc: 'Discover history, mythology, architecture, and local legends.',
+      title: t('pillars.knowTitle', 'Know the Place'),
+      desc: t('pillars.knowDesc', 'Discover history, mythology, architecture, and local legends.'),
       icon: BookOpen,
       link: '/know',
       badge: 'Citation Provenance',
     },
     {
-      title: 'Stories & Heritage',
-      desc: 'Read and preserve stories passed down through families and communities.',
+      title: t('pillars.storiesTitle', 'Stories & Heritage'),
+      desc: t('pillars.storiesDesc', 'Read and preserve stories passed down through families and communities.'),
       icon: Feather,
       link: '/stories',
       badge: 'Multilingual Archive',
@@ -102,11 +101,11 @@ export const HomePage: React.FC = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-[#FAF7F0] text-[#102A43] overflow-x-hidden">
+    <div className="min-h-screen bg-[#FAF7F0] dark:bg-[#0B192C] text-[#102A43] dark:text-[#FAF7F0] overflow-x-hidden transition-colors duration-200">
       {/* ========================================== */}
       {/* SECTION 1: CULTURAL HERO                   */}
       {/* ========================================== */}
-      <section className="relative min-h-[85vh] flex items-center justify-center overflow-hidden bg-[#102A43] text-[#FAF7F0] px-4 sm:px-6 lg:px-8 py-20">
+      <section className="relative min-h-[85vh] flex items-center justify-center overflow-hidden bg-[#102A43] dark:bg-[#071320] text-[#FAF7F0] px-4 sm:px-6 lg:px-8 py-20">
         {/* Background Video / Optimized Heritage Imagery */}
         <div className="absolute inset-0 z-0">
           <video
@@ -117,15 +116,14 @@ export const HomePage: React.FC = () => {
             poster="https://images.unsplash.com/photo-1561361513-2d000a50f0dc?auto=format&fit=crop&w=1920&q=80"
             className="w-full h-full object-cover object-center opacity-30 transform scale-105 transition-opacity duration-1000"
           >
-            {/* Cinematic India heritage footage */}
             <source
               src="https://assets.mixkit.co/videos/preview/mixkit-aerial-view-of-a-temple-complex-41487-large.mp4"
               type="video/mp4"
             />
           </video>
-          {/* Refined Cultural Blue Overlay to ensure high text contrast */}
-          <div className="absolute inset-0 bg-gradient-to-b from-[#102A43]/90 via-[#102A43]/85 to-[#102A43]"></div>
-          {/* Subtle Classical Indian Architectural Pattern Overlay */}
+          {/* Refined Cultural Blue Overlay */}
+          <div className="absolute inset-0 bg-gradient-to-b from-[#102A43]/90 via-[#102A43]/85 to-[#102A43] dark:from-[#071320]/95 dark:via-[#071320]/90 dark:to-[#071320]"></div>
+          {/* Subtle Classical Architectural Pattern Overlay */}
           <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#C89B3C_1.5px,transparent_1.5px)] [background-size:28px_28px] pointer-events-none"></div>
         </div>
 
@@ -133,22 +131,25 @@ export const HomePage: React.FC = () => {
         <div className="relative z-10 max-w-4xl mx-auto text-center space-y-6">
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#C89B3C]/20 border border-[#C89B3C]/40 text-[#C89B3C] text-xs font-bold uppercase tracking-wider shadow-sm">
             <Sparkles className="w-3.5 h-3.5" />
-            <span>TravelXP • Cultural Discovery & Smart Travel</span>
+            <span>{t('hero.badge', 'TravelXP • Cultural Discovery & Smart Travel')}</span>
           </div>
 
           <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight font-heritage leading-[1.15] text-[#FAF7F0]">
-            Every destination has a story. <br className="hidden sm:inline" />
+            {t('hero.headline1', 'Every destination has a story.')} <br className="hidden sm:inline" />
             <span className="bg-gradient-to-r from-[#C89B3C] via-[#D9EAF7] to-white bg-clip-text text-transparent">
-              Every journey creates a memory.
+              {t('hero.headline2', 'Every journey creates a memory.')}
             </span>
           </h1>
 
           <p className="max-w-2xl mx-auto text-sm sm:text-base text-[#D9EAF7]/90 leading-relaxed font-medium">
-            Your one-stop platform to discover India's heritage, uncover its mythology, plan meaningful journeys, and find travel and booking options, all in one place.
+            {t(
+              'hero.subtext',
+              "Your one-stop platform to discover India's heritage, uncover its mythology, plan meaningful journeys, and find travel and booking options, all in one place."
+            )}
           </p>
 
           <p className="text-xs sm:text-sm text-[#C89B3C] font-semibold tracking-wide">
-            Explore places. Discover legends. Plan your journey.
+            {t('hero.shortLine', 'Explore places. Discover legends. Plan your journey.')}
           </p>
 
           {/* Primary Call to Action Buttons */}
@@ -158,7 +159,7 @@ export const HomePage: React.FC = () => {
               className="w-full sm:w-auto px-8 py-3.5 rounded-xl bg-gradient-to-r from-[#C89B3C] to-amber-500 hover:from-amber-500 hover:to-[#C89B3C] text-[#102A43] font-extrabold text-xs sm:text-sm shadow-gold transition-all duration-300 hover:scale-105 flex items-center justify-center gap-2"
             >
               <Compass className="w-4 h-4" />
-              <span>Explore India</span>
+              <span>{t('hero.exploreIndia', 'Explore India')}</span>
             </button>
 
             <Link
@@ -166,7 +167,7 @@ export const HomePage: React.FC = () => {
               className="w-full sm:w-auto px-8 py-3.5 rounded-xl bg-[#174A7E]/60 hover:bg-[#174A7E] text-white font-bold text-xs sm:text-sm border border-[#D9EAF7]/30 transition-all flex items-center justify-center gap-2"
             >
               <Calendar className="w-4 h-4 text-[#C89B3C]" />
-              <span>Plan My Journey</span>
+              <span>{t('hero.planJourney', 'Plan My Journey')}</span>
             </Link>
           </div>
 
@@ -177,7 +178,7 @@ export const HomePage: React.FC = () => {
               className="text-xs text-[#D9EAF7]/80 hover:text-white font-semibold underline underline-offset-4 decoration-[#C89B3C] transition-colors inline-flex items-center gap-1.5"
             >
               <Feather className="w-3.5 h-3.5 text-[#C89B3C]" />
-              <span>Discover stories from generations past →</span>
+              <span>{t('hero.discoverStories', 'Discover stories from generations past →')}</span>
             </Link>
           </div>
         </div>
@@ -197,15 +198,18 @@ export const HomePage: React.FC = () => {
       {/* ========================================== */}
       <section ref={mapSectionRef} className="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
         <div className="text-center max-w-3xl mx-auto mb-10 space-y-2">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#174A7E]/10 text-[#174A7E] text-xs font-bold uppercase tracking-wider">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#174A7E]/10 dark:bg-[#174A7E]/30 text-[#174A7E] dark:text-[#D9EAF7] text-xs font-bold uppercase tracking-wider">
             <Compass className="w-3.5 h-3.5" />
-            <span>Interactive Sacred & Heritage Geography</span>
+            <span>{t('map.badge', 'Interactive Sacred & Heritage Geography')}</span>
           </div>
-          <h2 className="text-3xl sm:text-4xl font-extrabold font-heritage text-[#102A43]">
-            Discover India, one story at a time.
+          <h2 className="text-3xl sm:text-4xl font-extrabold font-heritage text-[#102A43] dark:text-white">
+            {t('map.heading', 'Discover India, one story at a time.')}
           </h2>
-          <p className="text-xs sm:text-sm text-slate-600 leading-relaxed font-medium">
-            Explore destinations, find places worth visiting, and uncover the cultural stories connected to every journey.
+          <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed font-medium">
+            {t(
+              'map.subtext',
+              'Explore destinations, find places worth visiting, and uncover the cultural stories connected to every journey.'
+            )}
           </p>
         </div>
 
@@ -216,17 +220,20 @@ export const HomePage: React.FC = () => {
       {/* ========================================== */}
       {/* SECTION 3: EXPLORE TRAVELXP (5 Core Cards) */}
       {/* ========================================== */}
-      <section className="py-20 bg-white border-y border-slate-200 px-4 sm:px-6 lg:px-8">
+      <section className="py-20 bg-white dark:bg-[#071320] border-y border-slate-200 dark:border-[#1E3A5F] px-4 sm:px-6 lg:px-8 transition-colors duration-200">
         <div className="max-w-7xl mx-auto">
           <div className="text-center max-w-2xl mx-auto mb-14 space-y-2">
             <span className="text-xs font-bold uppercase tracking-widest text-[#C89B3C]">
-              The TravelXP Ecosystem
+              {t('pillars.badge', 'The TravelXP Ecosystem')}
             </span>
-            <h2 className="text-3xl font-extrabold font-heritage text-[#102A43]">
-              Five Connected Experiences
+            <h2 className="text-3xl font-extrabold font-heritage text-[#102A43] dark:text-white">
+              {t('pillars.heading', 'Five Connected Experiences')}
             </h2>
-            <p className="text-xs sm:text-sm text-slate-500">
-              Everything you need to discover, understand, and travel through India's living cultural heritage.
+            <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400">
+              {t(
+                'pillars.subtext',
+                "Everything you need to discover, understand, and travel through India's living cultural heritage."
+              )}
             </p>
           </div>
 
@@ -237,28 +244,28 @@ export const HomePage: React.FC = () => {
                 <Link
                   key={pillar.title}
                   to={pillar.link}
-                  className="bg-[#FAF7F0] rounded-2xl p-6 border border-[#174A7E]/15 hover:border-[#C89B3C] shadow-subtle hover:shadow-premium hover:-translate-y-1.5 transition-all group flex flex-col justify-between"
+                  className="bg-[#FAF7F0] dark:bg-[#102A43] rounded-2xl p-6 border border-[#174A7E]/15 dark:border-[#1E3A5F] hover:border-[#C89B3C] shadow-subtle hover:shadow-premium hover:-translate-y-1.5 transition-all group flex flex-col justify-between"
                 >
                   <div>
                     <div className="flex items-center justify-between mb-4">
-                      <div className="w-11 h-11 rounded-xl bg-[#102A43] text-[#C89B3C] flex items-center justify-center shadow-sm group-hover:bg-[#246BCE] group-hover:text-white transition-colors">
+                      <div className="w-11 h-11 rounded-xl bg-[#102A43] dark:bg-[#071320] text-[#C89B3C] flex items-center justify-center shadow-sm group-hover:bg-[#246BCE] group-hover:text-white transition-colors">
                         <Icon className="w-5 h-5" />
                       </div>
-                      <span className="text-[9px] font-bold px-2 py-0.5 rounded-full bg-slate-200/80 text-slate-700">
+                      <span className="text-[9px] font-bold px-2 py-0.5 rounded-full bg-slate-200/80 dark:bg-slate-700 text-slate-700 dark:text-slate-300">
                         {pillar.badge}
                       </span>
                     </div>
 
-                    <h3 className="font-extrabold text-base text-[#102A43] mb-2">
+                    <h3 className="font-extrabold text-base text-[#102A43] dark:text-white mb-2">
                       {pillar.title}
                     </h3>
-                    <p className="text-xs text-slate-600 leading-relaxed">
+                    <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
                       {pillar.desc}
                     </p>
                   </div>
 
-                  <div className="pt-5 flex items-center gap-1.5 text-xs font-bold text-[#246BCE] group-hover:text-[#C89B3C] transition-colors">
-                    <span>Explore Experience</span>
+                  <div className="pt-5 flex items-center gap-1.5 text-xs font-bold text-[#246BCE] dark:text-[#D9EAF7] group-hover:text-[#C89B3C] transition-colors">
+                    <span>{t('map.exploreDetail', 'Explore Experience')}</span>
                     <ArrowRight className="w-3.5 h-3.5" />
                   </div>
                 </Link>
@@ -276,21 +283,24 @@ export const HomePage: React.FC = () => {
           <div>
             <div className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-[#C89B3C] mb-2">
               <Feather className="w-3.5 h-3.5" />
-              <span>Living Community Archive</span>
+              <span>{t('stories.archive', 'Living Community Archive')}</span>
             </div>
-            <h2 className="text-3xl font-extrabold font-heritage text-[#102A43]">
-              Stories from Generations Past
+            <h2 className="text-3xl font-extrabold font-heritage text-[#102A43] dark:text-white">
+              {t('stories.heading', 'Stories from Generations Past')}
             </h2>
-            <p className="text-xs sm:text-sm text-slate-500 mt-1">
-              Oral traditions, grandmother's tales, and sacred memories preserved in original scripts.
+            <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-1">
+              {t(
+                'stories.subtext',
+                "Oral traditions, grandmother's tales, and sacred memories preserved in original scripts."
+              )}
             </p>
           </div>
 
           <Link
             to="/stories"
-            className="text-xs font-bold text-[#246BCE] hover:text-[#102A43] flex items-center gap-1 underline underline-offset-4 shrink-0"
+            className="text-xs font-bold text-[#246BCE] dark:text-[#D9EAF7] hover:text-[#102A43] flex items-center gap-1 underline underline-offset-4 shrink-0"
           >
-            <span>View All Stories</span>
+            <span>{t('stories.viewAll', 'View All Stories')}</span>
             <ArrowRight className="w-3.5 h-3.5" />
           </Link>
         </div>
@@ -300,43 +310,43 @@ export const HomePage: React.FC = () => {
             {featuredStories.map((story) => (
               <div
                 key={story.id}
-                className="bg-white rounded-3xl border border-slate-200 p-6 shadow-sm hover:shadow-premium transition-all flex flex-col justify-between"
+                className="bg-white dark:bg-[#102A43] rounded-3xl border border-slate-200 dark:border-[#1E3A5F] p-6 shadow-sm hover:shadow-premium transition-all flex flex-col justify-between"
               >
                 <div className="space-y-3">
                   <div className="flex items-center justify-between">
-                    <span className="text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-purple-100 text-purple-900">
+                    <span className="text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-purple-100 dark:bg-purple-900/60 text-purple-900 dark:text-purple-200">
                       {story.category}
                     </span>
-                    <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-slate-100 text-slate-500 uppercase">
+                    <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-700 text-slate-500 dark:text-slate-300 uppercase">
                       {story.originalLanguage}
                     </span>
                   </div>
 
-                  <h3 className="font-extrabold text-base text-[#102A43] leading-snug">
+                  <h3 className="font-extrabold text-base text-[#102A43] dark:text-white leading-snug">
                     {story.title}
                   </h3>
 
-                  <p className="text-xs text-slate-600 line-clamp-3 leading-relaxed font-devanagari">
+                  <p className="text-xs text-slate-600 dark:text-slate-300 line-clamp-3 leading-relaxed font-devanagari">
                     {story.body}
                   </p>
                 </div>
 
-                <div className="pt-4 mt-4 border-t border-slate-100 flex items-center justify-between text-xs">
-                  <span className="text-slate-500 text-[11px]">
-                    By <strong>{story.authorDisplayName}</strong>
+                <div className="pt-4 mt-4 border-t border-slate-100 dark:border-[#1E3A5F] flex items-center justify-between text-xs">
+                  <span className="text-slate-500 dark:text-slate-400 text-[11px]">
+                    {t('stories.by', 'By')} <strong>{story.authorDisplayName}</strong>
                   </span>
                   <Link
                     to={`/stories/${story.id}`}
-                    className="font-bold text-[#246BCE] hover:underline"
+                    className="font-bold text-[#246BCE] dark:text-[#D9EAF7] hover:underline"
                   >
-                    Read Story →
+                    {t('stories.readStory', 'Read Story →')}
                   </Link>
                 </div>
               </div>
             ))}
           </div>
         ) : (
-          <div className="p-8 text-center bg-white rounded-3xl border border-slate-200 text-xs text-slate-500">
+          <div className="p-8 text-center bg-white dark:bg-[#102A43] rounded-3xl border border-slate-200 dark:border-[#1E3A5F] text-xs text-slate-500 dark:text-slate-400">
             Stories are currently being curated. Be the first to share an oral family memory.
           </div>
         )}
@@ -345,43 +355,46 @@ export const HomePage: React.FC = () => {
       {/* ========================================== */}
       {/* SECTION 5: PLAN YOUR NEXT JOURNEY (CTA)    */}
       {/* ========================================== */}
-      <section className="py-16 bg-[#102A43] text-[#FAF7F0] px-4 sm:px-6 lg:px-8">
-        <div className="max-w-5xl mx-auto bg-gradient-to-br from-[#174A7E] to-[#102A43] rounded-3xl p-8 sm:p-12 border border-[#C89B3C]/30 shadow-premium">
+      <section className="py-16 bg-[#102A43] dark:bg-[#071320] text-[#FAF7F0] px-4 sm:px-6 lg:px-8">
+        <div className="max-w-5xl mx-auto bg-gradient-to-br from-[#174A7E] to-[#102A43] dark:from-[#0F2438] dark:to-[#071320] rounded-3xl p-8 sm:p-12 border border-[#C89B3C]/30 shadow-premium">
           <div className="text-center max-w-xl mx-auto space-y-2 mb-8">
             <span className="text-xs font-bold uppercase tracking-widest text-[#C89B3C]">
-              Intelligent Itinerary Architect
+              {t('planner.badge', 'Intelligent Itinerary Architect')}
             </span>
             <h2 className="text-2xl sm:text-3xl font-extrabold font-heritage">
-              Plan Your Next Cultural Journey
+              {t('planner.heading', 'Plan Your Next Cultural Journey')}
             </h2>
             <p className="text-xs sm:text-sm text-[#D9EAF7]/80">
-              Generate a realistic day-by-day schedule with travel times, budgets, and rest periods.
+              {t(
+                'planner.subtext',
+                'Generate a realistic day-by-day schedule with travel times, budgets, and rest periods.'
+              )}
             </p>
           </div>
 
           <form onSubmit={handleQuickPlan} className="grid grid-cols-1 sm:grid-cols-4 gap-4 max-w-3xl mx-auto">
             <div>
               <label className="text-[11px] font-bold uppercase text-[#D9EAF7]/70 block mb-1.5">
-                Destination
+                {t('planner.destination', 'Destination')}
               </label>
               <input
                 type="text"
                 value={plannerDestination}
                 onChange={(e) => setPlannerDestination(e.target.value)}
                 placeholder="e.g. Varanasi, Hampi"
-                className="w-full text-xs font-bold p-3 rounded-xl bg-white text-[#102A43] border border-slate-200 outline-none"
+                className="w-full text-xs font-bold p-3 rounded-xl bg-white dark:bg-[#102A43] text-[#102A43] dark:text-white border border-slate-200 dark:border-[#1E3A5F] outline-none"
                 required
               />
             </div>
 
             <div>
               <label className="text-[11px] font-bold uppercase text-[#D9EAF7]/70 block mb-1.5">
-                Duration
+                {t('planner.duration', 'Duration')}
               </label>
               <select
                 value={plannerDuration}
                 onChange={(e) => setPlannerDuration(e.target.value)}
-                className="w-full text-xs font-bold p-3 rounded-xl bg-white text-[#102A43] border border-slate-200 outline-none"
+                className="w-full text-xs font-bold p-3 rounded-xl bg-white dark:bg-[#102A43] text-[#102A43] dark:text-white border border-slate-200 dark:border-[#1E3A5F] outline-none"
               >
                 <option value="2">2 Days (Weekend)</option>
                 <option value="3">3 Days (Immersive)</option>
@@ -392,12 +405,12 @@ export const HomePage: React.FC = () => {
 
             <div>
               <label className="text-[11px] font-bold uppercase text-[#D9EAF7]/70 block mb-1.5">
-                Approx. Budget (₹)
+                {t('planner.budget', 'Approx. Budget (₹)')}
               </label>
               <select
                 value={plannerBudget}
                 onChange={(e) => setPlannerBudget(e.target.value)}
-                className="w-full text-xs font-bold p-3 rounded-xl bg-white text-[#102A43] border border-slate-200 outline-none"
+                className="w-full text-xs font-bold p-3 rounded-xl bg-white dark:bg-[#102A43] text-[#102A43] dark:text-white border border-slate-200 dark:border-[#1E3A5F] outline-none"
               >
                 <option value="15000">₹15,000 (Budget)</option>
                 <option value="30000">₹30,000 (Comfort)</option>
@@ -411,7 +424,7 @@ export const HomePage: React.FC = () => {
                 className="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-[#C89B3C] to-amber-500 hover:from-amber-500 hover:to-[#C89B3C] text-[#102A43] font-extrabold text-xs shadow-gold transition-transform hover:scale-105 flex items-center justify-center gap-1.5"
               >
                 <Sparkles className="w-4 h-4" />
-                <span>Plan Journey</span>
+                <span>{t('planner.submit', 'Plan Journey')}</span>
               </button>
             </div>
           </form>
@@ -422,29 +435,32 @@ export const HomePage: React.FC = () => {
       {/* SECTION 6: ABOUT TRAVELXP                  */}
       {/* ========================================== */}
       <section className="py-20 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto">
-        <div className="bg-white rounded-3xl border border-slate-200 p-8 sm:p-12 shadow-sm space-y-6 text-center">
+        <div className="bg-white dark:bg-[#102A43] rounded-3xl border border-slate-200 dark:border-[#1E3A5F] p-8 sm:p-12 shadow-sm space-y-6 text-center transition-colors duration-200">
           <span className="text-xs font-bold uppercase tracking-widest text-[#C89B3C]">
-            Our Mission & Purpose
+            {t('about.badge', 'Our Mission & Purpose')}
           </span>
-          <h2 className="text-2xl sm:text-4xl font-extrabold font-heritage text-[#102A43]">
-            Preserving Cultural Memory. Traveling Smarter.
+          <h2 className="text-2xl sm:text-4xl font-extrabold font-heritage text-[#102A43] dark:text-white">
+            {t('about.heading', 'Preserving Cultural Memory. Traveling Smarter.')}
           </h2>
-          <p className="text-xs sm:text-sm text-slate-600 leading-relaxed max-w-3xl mx-auto font-medium">
-            TravelXP brings together travel discovery, intelligent planning, genuine booking options, and the cultural stories that make places meaningful. We honor the oral memories passed down by grandmothers, temple guardians, and local elders, ensuring they remain discoverable alongside verified historical citations and modern transit schedules.
+          <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed max-w-3xl mx-auto font-medium">
+            {t(
+              'about.subtext',
+              'TravelXP brings together travel discovery, intelligent planning, genuine booking options, and the cultural stories that make places meaningful. We honor the oral memories passed down by grandmothers, temple guardians, and local elders, ensuring they remain discoverable alongside verified historical citations and modern transit schedules.'
+            )}
           </p>
 
-          <div className="pt-2 flex flex-wrap items-center justify-center gap-6 text-xs text-slate-500">
+          <div className="pt-2 flex flex-wrap items-center justify-center gap-6 text-xs text-slate-500 dark:text-slate-400">
             <span className="flex items-center gap-1.5">
-              <CheckCircle2 className="w-4 h-4 text-emerald-600" />
-              Verified Archaeological Provenance
+              <CheckCircle2 className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
+              {t('about.provenance', 'Verified Archaeological Provenance')}
             </span>
             <span className="flex items-center gap-1.5">
-              <Languages className="w-4 h-4 text-[#246BCE]" />
-              Multilingual Memory Preservation
+              <Languages className="w-4 h-4 text-[#246BCE] dark:text-[#D9EAF7]" />
+              {t('about.multilingual', 'Multilingual Memory Preservation')}
             </span>
             <span className="flex items-center gap-1.5">
               <ShieldCheck className="w-4 h-4 text-[#C89B3C]" />
-              Official Authorized Booking Links
+              {t('about.booking', 'Official Authorized Booking Links')}
             </span>
           </div>
         </div>

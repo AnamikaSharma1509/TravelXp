@@ -1,26 +1,29 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Compass, Heart, Shield, Sparkles, MapPin } from 'lucide-react';
+import { useTranslation } from '../../context/LanguageContext';
 
 export const Footer: React.FC = () => {
+  const { t } = useTranslation();
+
   return (
-    <footer className="bg-brand-midnight text-brand-ivory border-t border-brand-heritage/40 pt-16 pb-12">
+    <footer className="bg-[#102A43] dark:bg-[#071320] text-[#FAF7F0] border-t border-[#174A7E]/40 dark:border-[#1E3A5F] pt-16 pb-12 transition-colors duration-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-10 pb-12 border-b border-brand-heritage/30">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-10 pb-12 border-b border-[#174A7E]/30 dark:border-[#1E3A5F]">
           {/* Brand Vision */}
           <div className="md:col-span-1 space-y-4">
             <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-brand-ocean to-brand-gold flex items-center justify-center">
+              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#246BCE] to-[#C89B3C] flex items-center justify-center shadow-gold">
                 <Compass className="w-5 h-5 text-white" />
               </div>
-              <span className="text-xl font-bold font-heritage tracking-wider text-brand-gold">
+              <span className="text-xl font-bold font-heritage tracking-wider text-[#C89B3C]">
                 TRAVELXP
               </span>
             </div>
-            <p className="text-xs text-brand-sky/80 leading-relaxed">
-              Every destination has a story. Every journey has a memory. Preserving Indian cultural heritage, folklore, and smart itineraries.
+            <p className="text-xs text-[#D9EAF7]/80 leading-relaxed">
+              {t('hero.tagline', 'Every destination has a story. Every journey creates a memory.')}
             </p>
-            <div className="flex items-center gap-2 text-[11px] text-brand-gold/90 font-medium pt-1">
+            <div className="flex items-center gap-2 text-[11px] text-[#C89B3C] font-medium pt-1">
               <MapPin className="w-3.5 h-3.5" />
               <span>Rooted in the Soil of India</span>
             </div>
@@ -28,15 +31,15 @@ export const Footer: React.FC = () => {
 
           {/* Core Experiences */}
           <div>
-            <h4 className="text-xs font-bold uppercase tracking-wider text-brand-gold mb-4">
-              Explore TravelXP
+            <h4 className="text-xs font-bold uppercase tracking-wider text-[#C89B3C] mb-4">
+              {t('pillars.badge', 'Explore TravelXP')}
             </h4>
-            <ul className="space-y-2.5 text-xs text-brand-sky/80">
-              <li><Link to="/discover" className="hover:text-white transition-colors">Discover India (Map)</Link></li>
-              <li><Link to="/book" className="hover:text-white transition-colors">Book Travel Hub</Link></li>
-              <li><Link to="/plan" className="hover:text-white transition-colors">Plan My Journey (AI)</Link></li>
-              <li><Link to="/know" className="hover:text-white transition-colors">Know the Place (Culture)</Link></li>
-              <li><Link to="/stories" className="hover:text-white transition-colors">Stories & Heritage Archive</Link></li>
+            <ul className="space-y-2.5 text-xs text-[#D9EAF7]/80">
+              <li><Link to="/discover" className="hover:text-white transition-colors">{t('nav.discover', 'Discover India')}</Link></li>
+              <li><Link to="/book" className="hover:text-white transition-colors">{t('nav.book', 'Book Travel')}</Link></li>
+              <li><Link to="/plan" className="hover:text-white transition-colors">{t('nav.plan', 'Plan My Journey')}</Link></li>
+              <li><Link to="/know" className="hover:text-white transition-colors">{t('nav.know', 'Know the Place')}</Link></li>
+              <li><Link to="/stories" className="hover:text-white transition-colors">{t('nav.stories', 'Stories & Heritage')}</Link></li>
             </ul>
           </div>
 

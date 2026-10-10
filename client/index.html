@@ -8,12 +8,34 @@
     <meta name="description" content="AI-Powered Travel Discovery, Cultural Heritage, Smart Itineraries, Verified Booking & Multilingual Storytelling across India." />
     <!-- Leaflet CSS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
-    <!-- Google Fonts: Plus Jakarta Sans & Noto Sans Devanagari -->
+    <!-- Google Fonts: Plus Jakarta Sans, Noto Sans Devanagari, Bengali, Tamil, Telugu, Arabic -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Noto+Sans+Devanagari:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Noto+Sans+Arabic:wght@400;600;700&family=Noto+Sans+Bengali:wght@400;600;700&family=Noto+Sans+Devanagari:wght@400;500;600;700&family=Noto+Sans+Tamil:wght@400;600;700&family=Noto+Sans+Telugu:wght@400;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script>
+      (function() {
+        try {
+          var saved = localStorage.getItem('travelxp_theme');
+          var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+          if (saved === 'dark' || (!saved && prefersDark)) {
+            document.documentElement.classList.add('dark');
+            document.documentElement.setAttribute('data-theme', 'dark');
+          } else {
+            document.documentElement.classList.remove('dark');
+            document.documentElement.setAttribute('data-theme', 'light');
+          }
+          var lang = localStorage.getItem('travelxp_lang');
+          if (lang) {
+            document.documentElement.lang = lang;
+            if (lang === 'ur' || lang === 'ar' || lang === 'ks' || lang === 'sd') {
+              document.documentElement.dir = 'rtl';
+            }
+          }
+        } catch(e) {}
+      })();
+    </script>
   </head>
-  <body class="bg-[#FAF7F0] text-[#102A43] antialiased selection:bg-brand-sky selection:text-brand-midnight">
+  <body class="bg-[#FAF7F0] text-[#102A43] dark:bg-[#0B192C] dark:text-[#FAF7F0] antialiased selection:bg-[#246BCE] selection:text-white transition-colors duration-200">
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>

@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
 import L from 'leaflet';
 import { MapMarker } from '../../types';
+import { useTranslation } from '../../context/LanguageContext';
 import {
   Compass,
   Sparkles,
@@ -54,6 +55,7 @@ export const FullWidthIndiaMap: React.FC<FullWidthIndiaMapProps> = ({
   className = '',
 }) => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const [selectedMarker, setSelectedMarker] = useState<MapMarker | null>(null);
   const [activeCenter, setActiveCenter] = useState<[number, number] | undefined>(undefined);
   const [filterTag, setFilterTag] = useState<string>('ALL');
@@ -79,24 +81,24 @@ export const FullWidthIndiaMap: React.FC<FullWidthIndiaMapProps> = ({
   });
 
   return (
-    <div className={`relative w-full rounded-3xl overflow-hidden shadow-premium border border-[#174A7E]/20 bg-slate-100 ${className}`}>
+    <div className={`relative w-full rounded-3xl overflow-hidden shadow-premium border border-[#174A7E]/20 dark:border-[#1E3A5F] bg-slate-100 dark:bg-[#071320] ${className}`}>
       {/* Top Filter Bar inside Map */}
       <div className="absolute top-4 left-4 right-4 z-[400] flex flex-wrap items-center justify-between gap-3 pointer-events-none">
-        <div className="flex flex-wrap items-center gap-1.5 bg-white/95 backdrop-blur-md p-1.5 rounded-2xl shadow-subtle border border-slate-200 pointer-events-auto text-xs">
+        <div className="flex flex-wrap items-center gap-1.5 bg-white/95 dark:bg-[#102A43]/95 backdrop-blur-md p-1.5 rounded-2xl shadow-subtle border border-slate-200 dark:border-[#1E3A5F] pointer-events-auto text-xs">
           {[
-            { id: 'ALL', label: 'All Destinations' },
-            { id: 'RECOMMENDED', label: '🟢 Recommended' },
-            { id: 'CURATED', label: '🔵 Curated Places' },
-            { id: 'HERITAGE', label: '🟡 Heritage Landmarks' },
-            { id: 'STORIES', label: '🟣 Community Stories' },
+            { id: 'ALL', label: t('map.all', 'All Destinations') },
+            { id: 'RECOMMENDED', label: t('map.recommended', '🟢 Recommended') },
+            { id: 'CURATED', label: t('map.curated', '🔵 Curated Places') },
+            { id: 'HERITAGE', label: t('map.heritage', '🟡 Heritage Landmarks') },
+            { id: 'STORIES', label: t('map.stories', '🟣 Community Stories') },
           ].map((tag) => (
             <button
               key={tag.id}
               onClick={() => setFilterTag(tag.id)}
               className={`px-3 py-1.5 rounded-xl font-bold transition-all ${
                 filterTag === tag.id
-                  ? 'bg-[#102A43] text-white shadow-sm'
-                  : 'text-slate-600 hover:bg-slate-100'
+                  ? 'bg-[#102A43] dark:bg-[#246BCE] text-white shadow-sm'
+                  : 'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-[#174A7E]/50'
               }`}
             >
               {tag.label}
@@ -105,10 +107,10 @@ export const FullWidthIndiaMap: React.FC<FullWidthIndiaMapProps> = ({
         </div>
 
         {/* Google Maps API status indicator */}
-        <div className="hidden sm:flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/90 backdrop-blur-md border border-slate-200 text-[10px] text-slate-500 shadow-sm pointer-events-auto">
+        <div className="hidden sm:flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/90 dark:bg-[#102A43]/90 backdrop-blur-md border border-slate-200 dark:border-[#1E3A5F] text-[10px] text-slate-500 dark:text-slate-400 shadow-sm pointer-events-auto">
           <Info className="w-3 h-3 text-[#246BCE]" />
           <span>
-            {googleApiKey ? 'Google Maps Enabled' : 'Carto / OpenStreetMap (Cultural Theme)'}
+            {googleApiKey ? 'Google Maps API Enabled' : 'Carto / OpenStreetMap (Cultural Theme)'}
           </span>
         </div>
       </div>
@@ -199,15 +201,15 @@ export const FullWidthIndiaMap: React.FC<FullWidthIndiaMapProps> = ({
 
       {/* Floating Anchored Information Modal / Card (Task 3 requirement: NOT a permanent side panel) */}
       {selectedMarker && (
-        <div className="absolute top-16 right-4 sm:right-6 bottom-auto max-w-sm sm:max-w-md w-[calc(100%-2rem)] z-[450] bg-white/95 backdrop-blur-xl rounded-3xl border border-slate-200 shadow-2xl p-5 space-y-4 animate-fadeIn pointer-events-auto max-h-[85%] overflow-y-auto">
+        <div className="absolute top-16 right-4 sm:right-6 bottom-auto max-w-sm sm:max-w-md w-[calc(100%-2rem)] z-[450] bg-white/95 dark:bg-[#102A43]/95 backdrop-blur-xl rounded-3xl border border-slate-200 dark:border-[#1E3A5F] shadow-2xl p-5 space-y-4 animate-fadeIn pointer-events-auto max-h-[85%] overflow-y-auto">
           {/* Header & Close Button */}
           <div className="flex items-center justify-between">
-            <span className="text-[10px] font-extrabold uppercase tracking-wider px-2.5 py-1 rounded-full bg-[#102A43] text-[#FAF7F0]">
+            <span className="text-[10px] font-extrabold uppercase tracking-wider px-2.5 py-1 rounded-full bg-[#102A43] dark:bg-[#246BCE] text-[#FAF7F0]">
               {selectedMarker.markerBadge}
             </span>
             <button
               onClick={() => setSelectedMarker(null)}
-              className="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-600 flex items-center justify-center transition-colors shadow-sm"
+              className="w-8 h-8 rounded-full bg-slate-100 dark:bg-[#174A7E] hover:bg-slate-200 dark:hover:bg-[#174A7E]/80 text-slate-600 dark:text-slate-200 flex items-center justify-center transition-colors shadow-sm"
               aria-label="Close details"
             >
               <X className="w-4 h-4" />
@@ -235,10 +237,10 @@ export const FullWidthIndiaMap: React.FC<FullWidthIndiaMapProps> = ({
 
           {/* Description & Cultural Highlight */}
           <div>
-            <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 block mb-1">
-              Cultural & Historical Highlight
+            <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-400 block mb-1">
+              {t('map.culturalHighlight', 'Cultural & Historical Highlight')}
             </span>
-            <p className="text-xs text-slate-700 leading-relaxed">
+            <p className="text-xs text-slate-700 dark:text-slate-200 leading-relaxed">
               {selectedMarker.description}
             </p>
           </div>
@@ -246,14 +248,14 @@ export const FullWidthIndiaMap: React.FC<FullWidthIndiaMapProps> = ({
           {/* Verified Top 5 Attractions */}
           {selectedMarker.topAttractions && selectedMarker.topAttractions.length > 0 && (
             <div>
-              <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 block mb-1.5">
-                Top Verified Attractions ({selectedMarker.topAttractions.slice(0, 5).length})
+              <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-400 block mb-1.5">
+                {t('map.topAttractions', 'Top Verified Attractions')} ({selectedMarker.topAttractions.slice(0, 5).length})
               </span>
               <div className="flex flex-wrap gap-1.5">
                 {selectedMarker.topAttractions.slice(0, 5).map((attraction, i) => (
                   <span
                     key={attraction}
-                    className="text-[11px] px-2.5 py-1 rounded-lg bg-[#FAF7F0] border border-[#174A7E]/20 text-[#102A43] font-medium"
+                    className="text-[11px] px-2.5 py-1 rounded-lg bg-[#FAF7F0] dark:bg-[#071320] border border-[#174A7E]/20 dark:border-[#1E3A5F] text-[#102A43] dark:text-[#FAF7F0] font-medium"
                   >
                     #{i + 1} {attraction}
                   </span>
@@ -263,28 +265,28 @@ export const FullWidthIndiaMap: React.FC<FullWidthIndiaMapProps> = ({
           )}
 
           {/* Community Stories Indicator */}
-          <div className="p-3 rounded-2xl bg-purple-50 border border-purple-200/70 flex items-center justify-between text-xs text-purple-900">
+          <div className="p-3 rounded-2xl bg-purple-50 dark:bg-purple-950/40 border border-purple-200/70 dark:border-purple-800/40 flex items-center justify-between text-xs text-purple-900 dark:text-purple-200">
             <div className="flex items-center gap-2">
-              <BookOpen className="w-4 h-4 text-purple-700 shrink-0" />
+              <BookOpen className="w-4 h-4 text-purple-700 dark:text-purple-400 shrink-0" />
               <span className="font-bold">
-                {selectedMarker.storyCount} Community {selectedMarker.storyCount === 1 ? 'Story' : 'Stories'}
+                {selectedMarker.storyCount} {t('map.communityStories', 'Community Stories')}
               </span>
             </div>
             <button
               onClick={() => navigate(`/stories?destination=${selectedMarker.slug}`)}
-              className="text-[11px] font-bold text-purple-700 hover:underline"
+              className="text-[11px] font-bold text-purple-700 dark:text-purple-400 hover:underline"
             >
-              Read Stories →
+              {t('map.readStories', 'Read Stories →')}
             </button>
           </div>
 
           {/* Action CTAs */}
-          <div className="pt-2 border-t border-slate-100 flex items-center gap-2.5">
+          <div className="pt-2 border-t border-slate-100 dark:border-[#1E3A5F] flex items-center gap-2.5">
             <button
               onClick={() => navigate(`/destinations/${selectedMarker.slug}`)}
-              className="flex-1 py-3 px-4 rounded-xl bg-[#102A43] hover:bg-[#174A7E] text-white font-bold text-xs shadow-md transition-all flex items-center justify-center gap-1.5"
+              className="flex-1 py-3 px-4 rounded-xl bg-[#102A43] dark:bg-[#246BCE] hover:bg-[#174A7E] text-white font-bold text-xs shadow-md transition-all flex items-center justify-center gap-1.5"
             >
-              <span>Explore in Detail</span>
+              <span>{t('map.exploreDetail', 'Explore in Detail')}</span>
               <ArrowRight className="w-4 h-4" />
             </button>
 
@@ -293,34 +295,34 @@ export const FullWidthIndiaMap: React.FC<FullWidthIndiaMapProps> = ({
               className="py-3 px-4 rounded-xl bg-[#C89B3C] hover:bg-amber-400 text-[#102A43] font-bold text-xs shadow-sm transition-all flex items-center gap-1.5"
             >
               <Calendar className="w-4 h-4" />
-              <span>Add to Itinerary</span>
+              <span>{t('map.addItinerary', 'Add to Itinerary')}</span>
             </button>
           </div>
         </div>
       )}
 
       {/* Persistent Map Legend in Bottom Corner */}
-      <div className="absolute bottom-4 left-4 z-[400] bg-white/95 backdrop-blur-md p-3.5 rounded-2xl border border-slate-200 shadow-premium text-xs text-[#102A43] max-w-sm pointer-events-auto">
-        <div className="flex items-center gap-1.5 font-bold mb-2 text-[#174A7E]">
+      <div className="absolute bottom-4 left-4 z-[400] bg-white/95 dark:bg-[#102A43]/95 backdrop-blur-md p-3.5 rounded-2xl border border-slate-200 dark:border-[#1E3A5F] shadow-premium text-xs text-[#102A43] dark:text-[#FAF7F0] max-w-sm pointer-events-auto">
+        <div className="flex items-center gap-1.5 font-bold mb-2 text-[#174A7E] dark:text-[#C89B3C]">
           <Layers className="w-3.5 h-3.5" />
-          <span>Map Marker Legend</span>
+          <span>{t('map.legend', 'Map Marker Legend')}</span>
         </div>
         <div className="grid grid-cols-2 gap-x-4 gap-y-1.5 text-[11px]">
           <div className="flex items-center gap-2">
             <span className="w-2.5 h-2.5 rounded-full bg-[#347A55]"></span>
-            <span>Recommended</span>
+            <span>{t('map.recommended', 'Recommended')}</span>
           </div>
           <div className="flex items-center gap-2">
             <span className="w-2.5 h-2.5 rounded-full bg-[#246BCE]"></span>
-            <span>Curated Places</span>
+            <span>{t('map.curated', 'Curated Places')}</span>
           </div>
           <div className="flex items-center gap-2">
             <span className="w-2.5 h-2.5 rounded-full bg-[#C89B3C]"></span>
-            <span>Heritage Landmarks</span>
+            <span>{t('map.heritage', 'Heritage Landmarks')}</span>
           </div>
           <div className="flex items-center gap-2">
             <span className="w-2.5 h-2.5 rounded-full bg-[#7A3E9D]"></span>
-            <span>Community Stories</span>
+            <span>{t('map.stories', 'Community Stories')}</span>
           </div>
         </div>
       </div>

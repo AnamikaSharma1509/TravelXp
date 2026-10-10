@@ -139,12 +139,32 @@ export const CreateStoryPage: React.FC = () => {
                 <select
                   value={form.originalLanguage}
                   onChange={(e) => setForm({ ...form, originalLanguage: e.target.value })}
-                  className="w-full p-3 rounded-xl border border-slate-300 text-xs font-semibold bg-slate-50"
+                  className="w-full p-3 rounded-xl border border-slate-300 text-xs font-semibold bg-slate-50 dark:bg-[#102A43] dark:text-white dark:border-[#1E3A5F]"
                 >
                   <option value="en">English</option>
                   <option value="hi">हिन्दी (Hindi)</option>
                   <option value="mr">मराठी (Marathi)</option>
                   <option value="bho">भोजपुरी (Bhojpuri)</option>
+                  <option value="bn">বাংলা (Bengali)</option>
+                  <option value="gu">ગુજરાતી (Gujarati)</option>
+                  <option value="pa">ਪੰਜਾਬੀ (Punjabi)</option>
+                  <option value="ta">தமிழ் (Tamil)</option>
+                  <option value="te">తెలుగు (Telugu)</option>
+                  <option value="kn">ಕನ್ನಡ (Kannada)</option>
+                  <option value="ml">മലയാളം (Malayalam)</option>
+                  <option value="or">ଓଡ଼ିଆ (Odia)</option>
+                  <option value="as">অসমীয়া (Assamese)</option>
+                  <option value="ur">اردو (Urdu)</option>
+                  <option value="sa">संस्कृतम् (Sanskrit)</option>
+                  <option value="kok">कोंकणी (Konkani)</option>
+                  <option value="mai">मैथिली (Maithili)</option>
+                  <option value="ks">कॉशुर (Kashmiri)</option>
+                  <option value="ne">नेपाली (Nepali)</option>
+                  <option value="sd">سنڌي (Sindhi)</option>
+                  <option value="fr">Français (French)</option>
+                  <option value="es">Español (Spanish)</option>
+                  <option value="ar">العربية (Arabic)</option>
+                  <option value="zh">中文 (Chinese)</option>
                 </select>
               </div>
 
